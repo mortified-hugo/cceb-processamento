@@ -84,24 +84,17 @@ df_access = pd.DataFrame()
 df_access['PROTOCOLO'] = [str(p) for p in pd.read_excel(f'excelteste/access-{analista}.xlsx', usecols='B')['PROTOCOLO']]
 filtro_processos = df_processos_geral[df_processos_geral['PROTOCOLO_SEI'].isin(df_access['PROTOCOLO'])]
 by_protocol = filtro_processos.set_index("PROTOCOLO_SEI")
-print('PROTOCOLOS DO ACCESS:')
-print(by_protocol.info)
 access_parser(df_access, by_protocol)
-print("PROTOCOLO DO ACCESS FINALIZADO:")
-print(df_access.info)
 
 
 # FUSÃO
 final_df = df.append(df_access)
-print('FINAL DF INFO:')
-print(final_df.info)
 
 
 # CNEAS E SITUAÇÃO
-print(cneas_df.head())
 final_df['CNEAS:'] = cneas_parser(final_df, cneas_df)
 final_df['SITUAÇÃO:'] = situacao_parser(final_df, old_df)
 sorted_df = final_df.sort_values(' Data da Requisição')
 sorted_df[' Data da Requisição'] = sorted_df[' Data da Requisição'].dt.strftime('%d/%m/%Y')
-print(sorted_df.head())
 sorted_df.to_excel('excelteste/retorno.xlsx', index=False)
+print('Planilha finalizada')
