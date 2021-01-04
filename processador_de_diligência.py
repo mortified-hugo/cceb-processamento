@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 
-file = 'input_diligencias.xlsx'
+file = 'input/diligencia/diligencia.xlsx'
 df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                    usecols=['#Processo',
                             'Análise Macro Analisada por:',
@@ -13,4 +13,4 @@ df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                             'Tipo:'])
 
 hoje = str(datetime.today())
-df.to_excel(f'output_diligência_{hoje[:11]}.xlsx', index=False)
+df.to_excel(f'output/diligência_{hoje[:11]}.xlsx', index=False)
