@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 
-file = 'input/diligencia/diligencia.xlsx'
+file = 'input/new/diligencia.xlsx'
 df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                    usecols=['#Processo',
                             'Análise Macro Analisada por:',
