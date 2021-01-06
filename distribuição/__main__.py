@@ -1,8 +1,8 @@
 import pandas as pd
 from glob import glob
 from datetime import datetime
-from functions import *
-from load_functions import *
+from functions.functions import access_parser, situacao_parser, cneas_parser
+from functions.load_functions import load_cneas, load_processos, load_main_sheet, load_old_sheet
 
 #Carregar planilhas de informação
 hoje = format(datetime.now(), '%d.%m.%Y')

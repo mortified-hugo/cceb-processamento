@@ -3,7 +3,7 @@ from datetime import datetime
 from glob import glob
 
 
-file = glob('input/diligencia/*.xlsx')[0]
+file = glob('input/*.xlsx')[0]
 df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                    usecols=['#Processo',
                             'Análise Macro Analisada por:',
