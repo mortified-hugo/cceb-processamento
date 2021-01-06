@@ -24,10 +24,10 @@ def situacao_parser(input_df, situacao):
             if type(status) is pd.Series:
                 status = status[0]
             if status in ['', np.nan, 0]:
-                status = "NÃO ANALISADO"
+                status = "SEM ANÁLISE"
             response.append(status)
         except KeyError:
-            response.append('NÃO ANALISADO')
+            response.append('SEM ANÁLISE')
 
     return response
 

@@ -7,10 +7,11 @@ from load_functions import *
 #Carregar planilhas de informação
 hoje = format(datetime.now(), '%d.%m.%Y')
 cneas_df = load_cneas('input/cneas.xlsx')
-df_processos_geral = load_processos('input/processos-geral.xlsx')
+df_processos_geral = load_processos('input/processos.xls')
 
 filenames = glob('input/new/*.xlsx')
-analistas = [file.strip('.xlsx').strip('input/new\\') for file in filenames]
+analistas = [file.rstrip('.xlsx').lstrip('input/new\\') for file in filenames]
+print(analistas)
 
 for analista in analistas:
 # PLANIULHA INICIAL
@@ -22,7 +23,7 @@ for analista in analistas:
 # DADOS DO ACCESS
 
     df_access = pd.DataFrame()
-    df_access['PROTOCOLO'] = [str(p) for p in pd.read_excel(f'input/access/{analista}.xlsx', usecols='B')['PROTOCOLO']]
+    df_access['PROTOCOLO'] = [str(p) for p in pd.read_excel(f'input/sei/{analista}.xlsx', usecols='B')['PROTOCOLO']]
     filtro_processos = df_processos_geral[df_processos_geral['PROTOCOLO_SEI'].isin(df_access['PROTOCOLO'])]
     by_protocol = filtro_processos.set_index("PROTOCOLO_SEI")
     access_parser(df_access, by_protocol)

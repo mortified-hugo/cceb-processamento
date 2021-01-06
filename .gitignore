@@ -1,8 +1,10 @@
 .env
-.input
-.output
-input/
-output/
+input/*.xlsx
+input/*/*.xlsx
+input/*.xls
+input/*/*.xls
+output/*.xlsx
+output/*.xls
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
