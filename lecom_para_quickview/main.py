@@ -1,41 +1,13 @@
 import pandas as pd
 import datetime as dt
-import re
 import json
+from lecom_para_quickview.functions import replace, replace_portaria, drop, adicionar_novas_portarias
 
 today = format(dt.datetime.now(), '%d.%m.%Y')
 
 df = pd.read_excel('input/entrada.xlsx', skiprows=[0, 1])
 print(df.head())
 print(df.shape)
-
-
-def drop(to_alter, args):
-    df = to_alter
-    for arg in args:
-        df = df.drop(df[df['Etapa atual'] == arg].index)
-    return df
-
-
-def replace(to_replace, df, column):
-    for key in to_replace:
-        df[column] = df[column].replace(to_replace[key], key)
-
-
-def replace_portaria(to_replace, df, column):
-    for key in to_replace:
-        df[column] = df[column].replace(key, to_replace[key])
-
-
-def adicionar_novas_portarias(list, dict):
-    for portaria in list:
-        if type(portaria) is str and portaria not in dict:
-            info = re.findall(r'\d+', portaria)
-            if len(info) == 2:
-                dict[portaria] = f'{info[0]}/{info[1]}'
-            else:
-                dict[portaria] = f'{info[0]}/?'
-
 
 df = drop(df,
           ['CANCELAR',
@@ -94,7 +66,5 @@ replace_portaria(portaria_assinada, df, 'Portaria Assinada')
 replace_portaria(portaria_assinada, df, 'Portaria Assinada - Fase Recursal')
 print(portaria_assinada)
 print(len(portaria_assinada))
-
-
 
 df.to_excel(f'output/processos_lecom_{today}.xlsx', index = False)
