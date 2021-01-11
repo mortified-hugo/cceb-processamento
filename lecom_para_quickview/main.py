@@ -58,8 +58,8 @@ check_dump = len(portaria_assinada)
 adicionar_novas_portarias(assinadas, portaria_assinada)
 adicionar_novas_portarias(recursal, portaria_assinada)
 
-with open('portarias.json', mode='w') as file:
-    if len(portaria_assinada) != check_dump:
+if len(portaria_assinada) != check_dump:
+    with open('portarias.json', mode='w') as file:
         json.dump(portaria_assinada, file)
 
 replace_portaria(portaria_assinada, df, 'Portaria Assinada')
