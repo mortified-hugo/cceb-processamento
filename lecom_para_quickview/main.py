@@ -1,5 +1,7 @@
 import pandas as pd
 import datetime as dt
+import re
+import json
 
 today = format(dt.datetime.now(), '%d.%m.%Y')
 
@@ -15,9 +17,24 @@ def drop(to_alter, args):
     return df
 
 
-def replace(to_replace, df):
+def replace(to_replace, df, column):
     for key in to_replace:
-        df['Etapa atual'] = df['Etapa atual'].replace(to_replace[key], key)
+        df[column] = df[column].replace(to_replace[key], key)
+
+
+def replace_portaria(to_replace, df, column):
+    for key in to_replace:
+        df[column] = df[column].replace(key, to_replace[key])
+
+
+def adicionar_novas_portarias(list, dict):
+    for portaria in list:
+        if type(portaria) is str and portaria not in dict:
+            info = re.findall(r'\d+', portaria)
+            if len(info) == 2:
+                dict[portaria] = f'{info[0]}/{info[1]}'
+            else:
+                dict[portaria] = f'{info[0]}/?'
 
 
 df = drop(df,
@@ -46,7 +63,7 @@ alt = {'ANÁLISE TECNICA - CGCEB' : ['ANALISE_MACRO',
        'AGUARDANDO MANIFESTAÇÃO EM FASE RECURSAL - MEC' : ['MEC_MANIFESTACAO_RECURSO'],
        'EM DILIGÊNCIA' :  ['VALIDACAO_DE_DOCUMENTOS', 'RESPONDER_DILIGENCIA']}
 
-replace(alt, df)
+replace(alt, df, 'Etapa atual')
 
 df['Etapa atual'] = df['Etapa atual'].replace('COMUNICAR_RESULTADO_FINAL', 'INDEFERIDO')
 df.loc[df['Decisão Final'] == 'Deferido', 'Etapa atual'] = 'DEFERIDO'
@@ -58,5 +75,26 @@ print(df['Etapa atual'].head())
 df['Portaria Assinada'] = df['Portaria Assinada'].map(lambda x: x.split('.pdf')[0], na_action='ignore')
 df['Portaria Assinada - Fase Recursal'] = df['Portaria Assinada - Fase Recursal'].map(
     lambda x: x.split('.pdf')[0], na_action='ignore')
+
+assinadas = set(df['Portaria Assinada'])
+recursal = set(df['Portaria Assinada - Fase Recursal'])
+
+with open('portarias.json', mode='r') as file:
+    portaria_assinada = json.load(file)
+
+check_dump = len(portaria_assinada)
+adicionar_novas_portarias(assinadas, portaria_assinada)
+adicionar_novas_portarias(recursal, portaria_assinada)
+
+with open('portarias.json', mode='w') as file:
+    if len(portaria_assinada) != check_dump:
+        json.dump(portaria_assinada, file)
+
+replace_portaria(portaria_assinada, df, 'Portaria Assinada')
+replace_portaria(portaria_assinada, df, 'Portaria Assinada - Fase Recursal')
+print(portaria_assinada)
+print(len(portaria_assinada))
+
+
 
 df.to_excel(f'output/processos_lecom_{today}.xlsx', index = False)
