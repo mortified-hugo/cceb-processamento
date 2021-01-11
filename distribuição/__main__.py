@@ -31,7 +31,7 @@ for analista in analistas:
 # FUSÃO
     final_df = df.append(df_access)
 
-    # CNEAS E SITUAÇÃO
+# CNEAS E SITUAÇÃO
     final_df['CNEAS:'] = cneas_parser(final_df, cneas_df)
     final_df['SITUAÇÃO:'] = situacao_parser(final_df, old_df)
     sorted_df = final_df.sort_values(' Data da Requisição')

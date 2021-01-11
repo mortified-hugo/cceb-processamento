@@ -8,7 +8,8 @@ def load_main_sheet(file):
                                 'PROTOCOLO',
                                 'CNPJ:',
                                 'Nome da Organização: (como está no CNPJ)',
-                                'Tipo:'],
+                                'Tipo:',
+                                'Etapa atual'],
                        )
     df[' Data da Requisição'] = pd.to_datetime(df[' Data da Requisição'], dayfirst=True)
     return df
