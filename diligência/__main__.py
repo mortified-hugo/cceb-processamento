@@ -3,6 +3,7 @@ from datetime import datetime
 from glob import glob
 
 
+hoje = format(datetime.now(), "%d.%m.%Y")
 file = glob('input/*.xlsx')[-1]
 df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                    usecols=['#Processo',
@@ -13,5 +14,4 @@ df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                             'Nome da Organização: (como está no CNPJ)',
                             'Tipo:'])
 
-hoje = str(datetime.today())
-df.to_excel(f'output/diligência_{hoje[:11]}.xlsx', index=False)
+df.to_excel(f'output/diligência_{hoje}.xlsx', index=False)

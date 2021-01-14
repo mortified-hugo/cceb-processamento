@@ -4,9 +4,12 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import os.path
+from dotenv import load_dotenv
 
-email = ''
-password = ''
+load_dotenv()
+email = os.getenv("EMAIL")
+password = os.getenv("PASSWORD")
+
 
 def send_email(email_recipient,
                email_subject,
