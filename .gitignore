@@ -14,6 +14,9 @@ output/*.xls
 /*/output/*.xlsx
 /*/output/*.xls
 
+#email
+diligência/emails/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
