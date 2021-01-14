@@ -26,7 +26,6 @@ for analista in set(df["Análise Macro Analisada por:"]):
                f"Att,\n"
                f"Hugo",
                str(pathlib.Path(diligencias).resolve()))
-    print(str(pathlib.Path(diligencias).resolve()))
 
 print("Emails enviados")
 
