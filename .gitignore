@@ -16,7 +16,7 @@ output/*.xls
 
 #email
 diligência/emails/
-diligência/output/for_emails/
+diligência/output/for_emails/*.xlsx
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
