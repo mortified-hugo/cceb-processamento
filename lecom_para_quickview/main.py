@@ -6,8 +6,7 @@ from lecom_para_quickview.functions import replace, replace_portaria, drop, adic
 today = format(dt.datetime.now(), '%d.%m.%Y')
 
 df = pd.read_excel('input/entrada.xlsx', skiprows=[0, 1])
-print(df.head())
-print(df.shape)
+print("INPUT CARREGADO")
 
 df = drop(df,
           ['CANCELAR',
@@ -41,8 +40,7 @@ df['Etapa atual'] = df['Etapa atual'].replace('COMUNICAR_RESULTADO_FINAL', 'INDE
 df.loc[df['Decisão Final'] == 'Deferido', 'Etapa atual'] = 'DEFERIDO'
 df.loc[df['Decisão:'] == 'RECONSIDERAÇÃO DA DECISÃO DE INDEFERIMENTO'] = 'DEFERIDO'
 
-print(df.shape)
-print(df['Etapa atual'].head())
+print("ETAPA ATUAL ATUALIZADA")
 
 df['Portaria Assinada'] = df['Portaria Assinada'].map(lambda x: x.split('.pdf')[0], na_action='ignore')
 df['Portaria Assinada - Fase Recursal'] = df['Portaria Assinada - Fase Recursal'].map(
@@ -61,10 +59,12 @@ adicionar_novas_portarias(recursal, portaria_assinada)
 if len(portaria_assinada) != check_dump:
     with open('portarias.json', mode='w') as file:
         json.dump(portaria_assinada, file)
+        print("NOVAS PORTARIAS SALVAS, CHECAR JSON")
 
 replace_portaria(portaria_assinada, df, 'Portaria Assinada')
 replace_portaria(portaria_assinada, df, 'Portaria Assinada - Fase Recursal')
-print(portaria_assinada)
-print(len(portaria_assinada))
+print("PORTARIAS SUBSTITUÍDAS")
+print(f"TOTAL DE {len(portaria_assinada)} PORTARIAS RECONHECIDAS")
 
 df.to_excel(f'output/processos_lecom_{today}.xlsx', index = False)
+print("TABELA SALVA")
