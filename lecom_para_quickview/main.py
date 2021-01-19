@@ -13,7 +13,12 @@ df = drop(df,
            'PREENCHER_INFORMACOES_COMPLEMENTARES',
            'CARTILHA_DE_CERTIFICACAO',
            'PREENCHER_DADOS_DA_ORGANIZACAO',
-           'PREENCHER_FORMULARIO_DE_REQUERIMENTO'])
+           'PREENCHER_FORMULARIO_DE_REQUERIMENTO'],
+          'Etapa atual')
+
+df = drop(df,
+          ['Cancelado'],
+          'Status do Processo')
 
 alt = {'ANÁLISE TECNICA - CGCEB': ['ANALISE_MACRO',
                                    'DILIGENCIA',
@@ -37,8 +42,9 @@ alt = {'ANÁLISE TECNICA - CGCEB': ['ANALISE_MACRO',
 replace(alt, df, 'Etapa atual')
 
 df['Etapa atual'] = df['Etapa atual'].replace('COMUNICAR_RESULTADO_FINAL', 'INDEFERIDO')
-df.loc[df['Decisão Final'] == 'Deferido', 'Etapa atual'] = 'DEFERIDO'
-df.loc[df['Decisão:'] == 'RECONSIDERAÇÃO DA DECISÃO DE INDEFERIMENTO', 'Etapa Atual'] = 'DEFERIDO'
+df.loc[(df['Decisão Final'] == 'Deferido') & (df['Etapa atual'] == 'INDEFERIDO'), 'Etapa atual'] = 'DEFERIDO'
+cond = (df['Decisão:.2'] == 'RECONSIDERAÇÃO DA DECISÃO DE INDEFERIMENTO') & (df['Etapa atual'] == 'INDEFERIDO')
+df.loc[cond, 'Etapa atual'] = 'DEFERIDO'
 
 print("ETAPA ATUAL ATUALIZADA")
 
@@ -63,6 +69,8 @@ if len(portaria_assinada) != check_dump:
 
 replace_portaria(portaria_assinada, df, 'Portaria Assinada')
 replace_portaria(portaria_assinada, df, 'Portaria Assinada - Fase Recursal')
+df['Portaria Publicada'] = df['Portaria Assinada']
+df['Portaria Publicada - Fase Recursal'] = df['Portaria Assinada - Fase Recursal']
 
 for processo_a_corrigir in [6005, 6787, 6969, 8107, 8241, 8327, 9062, 9645, 10078, 11049, 10828,
                             16725, 16882, 17092, 17604, 17648, 18108, 19203, 19253, 19855, 20560,
@@ -74,5 +82,5 @@ for processo_a_corrigir in [6005, 6787, 6969, 8107, 8241, 8327, 9062, 9645, 1007
 print("PORTARIAS SUBSTITUÍDAS")
 print(f"TOTAL DE {len(portaria_assinada)} PORTARIAS RECONHECIDAS")
 
-df.to_excel(f'output/processos_lecom_{today}.xlsx', index=True)
+df.to_excel(f'output/processos_lecom_{today}.xlsx', index=True, sheet_name='Principal')
 print("TABELA SALVA")
