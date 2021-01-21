@@ -2,11 +2,13 @@ import json
 import pandas as pd
 import pathlib
 from datetime import datetime
+from functions.functions import preparar_excel, comprimento
 
 from diligência.email_function import send_email
 
 
 hoje = format(datetime.now(), "%d.%m.%Y")
+comp = comprimento()
 
 with open("emails/analistas.json", mode='r') as file:
     analistas = json.load(file)
@@ -20,9 +22,10 @@ try:
         df[df["Análise Macro Analisada por:"] == analista].to_excel(
             diligencias,
             index=False)
+        preparar_excel(diligencias)
         send_email(analistas[analista]["email"],
                    f"Tramitação de Processos LECOM - Resposta de Diligência - {hoje}",
-                   f"Bom dia {analistas[analista]['nome']},\n\n"
+                   f"{comp} {analistas[analista]['nome']},\n\n"
                    f"Segue em anexo tramitação de processos com resposta de diligência:\n\n"
                    f"Att,\n"
                    f"Hugo",

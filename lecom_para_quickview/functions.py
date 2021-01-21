@@ -2,10 +2,10 @@ import re
 import pandas as pd
 
 
-def drop(to_alter, args):
+def drop(to_alter, args, column):
     df = to_alter
     for arg in args:
-        df = df.drop(df[df['Etapa atual'] == arg].index)
+        df = df.drop(df[df[column] == arg].index)
     return df
 
 

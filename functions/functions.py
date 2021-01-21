@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import win32com.client as win32
+import pathlib
+from datetime import datetime
 
 
 def cneas_parser(input_df, cneas):
@@ -49,4 +52,22 @@ def access_parser(df, reference_df):
     df['CNPJ:'] = cnpj
     df['Nome da Organização: (como está no CNPJ)'] = nome
     df['Tipo:'] = tipo
+
+def preparar_excel(input):
+    excel = win32.gencache.EnsureDispatch('Excel.Application')
+    wb = excel.Workbooks.Open(str(pathlib.Path(input).resolve()))
+    ws = wb.Worksheets("Sheet1")
+    ws.Columns.AutoFit()
+    wb.Save()
+    excel.Application.Quit()
+
+def comprimento():
+    current_hour = datetime.now().hour
+    if current_hour < 12:
+        return 'Bom dia'
+    elif 12 <= current_hour < 18:
+        return 'Boa tarde'
+    else:
+        return 'Boa noite'
+
 
