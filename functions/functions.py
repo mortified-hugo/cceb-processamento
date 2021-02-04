@@ -5,9 +5,13 @@ import pathlib
 from datetime import datetime
 
 
-def cneas_parser(input_df, cneas):
+def cneas_parser(input_df, cneas, access=False):
+    if access:
+        column = 'CNPJ'
+    else:
+        column = 'CNPJ:'
     response = []
-    for cnpj in input_df['CNPJ:']:
+    for cnpj in input_df[column]:
         try:
             status = cneas.loc[cnpj, 'Status do\nCNEAS']
             if type(status) is pd.Series:
@@ -41,17 +45,20 @@ def access_parser(df, reference_df):
     cnpj = []
     nome = []
     tipo = []
+    fase = []
     for protocolo in df['PROTOCOLO']:
         base.append(reference_df.loc[protocolo, 'BASE'])
         data.append(reference_df.loc[protocolo, "DT_PROTOCOLO"])
         cnpj.append(reference_df.loc[protocolo, "CNPJ"])
         nome.append(reference_df.loc[protocolo, "ENTIDADE"])
         tipo.append(reference_df.loc[protocolo, "TIPO_PROCESSO"])
+        fase.append(reference_df.loc[protocolo, 'FASE_PROCESSO'])
     df['#Processo'] = base
     df[' Data da Requisição'] = data
     df['CNPJ:'] = cnpj
     df['Nome da Organização: (como está no CNPJ)'] = nome
     df['Tipo:'] = tipo
+    df['Etapa atual'] = fase
 
 def preparar_excel(input):
     excel = win32.gencache.EnsureDispatch('Excel.Application')

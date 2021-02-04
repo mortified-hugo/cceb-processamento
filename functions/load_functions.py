@@ -8,7 +8,8 @@ def load_main_sheet(file):
                                 'PROTOCOLO',
                                 'CNPJ:',
                                 'Nome da Organização: (como está no CNPJ)',
-                                'Tipo:'
+                                'Tipo:',
+                                'Etapa atual'
                                 ],
                        )
     df[' Data da Requisição'] = pd.to_datetime(df[' Data da Requisição'], dayfirst=True)
@@ -33,7 +34,8 @@ def load_processos(file):
                                 'CNPJ',
                                 'DT_PROTOCOLO',
                                 'TIPO_PROCESSO',
-                                'PROTOCOLO_SEI']
+                                'PROTOCOLO_SEI',
+                                'FASE_PROCESSO']
                        )
     return df
 

@@ -12,7 +12,7 @@ cneas_df = load_cneas('input/cneas.xlsx')
 df_processos_geral = load_processos('input/processos.xls')
 
 filenames = glob('input/new/*.xlsx')
-analistas = [file.rstrip('.xlsx').lstrip('input/new\\') for file in filenames]
+analistas = [file.replace('.xlsx', '').replace('input/new\\', '') for file in filenames]
 print(analistas)
 
 for analista in analistas:
@@ -45,6 +45,6 @@ for analista in analistas:
     sorted_df.to_excel(excel, index=False)
     preparar_excel(excel)
 
-    print(f"Planilha de {analista} finalizada, com {len(df.index)} processos atribuídos")
+    print(f"Planilha de {analista} finalizada, com {len(final_df.index)} processos atribuídos")
 
 print('Planilhas Processadas')

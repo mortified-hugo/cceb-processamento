@@ -1,6 +1,3 @@
-from glob import glob
+from datetime import datetime
 
-filenames = glob('distribuição/input/new/*.xlsx')
-analistas = [file.strip('.xlsx').strip('input/new\\') for file in filenames]
-
-print(analistas)
+print(datetime.now().hour)

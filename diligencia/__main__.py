@@ -14,4 +14,4 @@ df = pd.read_excel(file, sheet_name=0, skiprows=[0, 1],
                             'Nome da Organização: (como está no CNPJ)',
                             'Tipo:'])
 
-df.to_excel(f'output/diligência_{hoje}.xlsx', index=False)
+df.to_excel(f'output/diligencia_{hoje}.xlsx', index=False)

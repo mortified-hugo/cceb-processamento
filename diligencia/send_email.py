@@ -4,7 +4,7 @@ import pathlib
 from datetime import datetime
 from functions.functions import preparar_excel, comprimento
 
-from diligência.email_function import send_email
+from diligencia.email_function import send_email
 
 
 hoje = format(datetime.now(), "%d.%m.%Y")
@@ -15,7 +15,7 @@ with open("emails/analistas.json", mode='r') as file:
     analistas["Karine Gonçalves de Souza"] = analistas['Karine GonÃ§alves de Souza']
 
 try:
-    df = pd.read_excel(f'output/diligência_{hoje}.xlsx')
+    df = pd.read_excel(f'output/diligencia_{hoje}.xlsx')
 
     for analista in set(df["Análise Macro Analisada por:"]):
         diligencias = f'output/for_emails/diligencia_{analistas[analista]["nome"]}_{hoje}.xlsx'
