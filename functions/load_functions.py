@@ -5,6 +5,7 @@ def load_main_sheet(file):
     df = pd.read_excel(file, sheet_name=0, engine='xlrd', skiprows=[0, 1],
                        usecols=['#Processo',
                                 ' Data da Requisição',
+                                'Análise Macro Analisada por:',
                                 'PROTOCOLO',
                                 'CNPJ:',
                                 'Nome da Organização: (como está no CNPJ)',

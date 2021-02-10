@@ -20,7 +20,7 @@ for analista in analistas:
 # PLANILHA INICIAL
     main_file = f'input/new/{analista}.xlsx'
     old_file = f'input/old/{analista}.xlsx'
-    df = load_main_sheet(main_file)
+    final_df = load_main_sheet(main_file)
     old_df = load_old_sheet(old_file)
 
 # DADOS DO ACCESS
@@ -46,5 +46,14 @@ for analista in analistas:
     preparar_excel(excel)
 
     print(f"Planilha de {analista} finalizada, com {len(final_df.index)} processos atribuídos")
+
+general_df = pd.DataFrame(columns=sorted_df.columns)
+for analista in analistas:
+    df = pd.read_excel(f'output/{analista}-{hoje}.xlsx')
+    df['Analista'] = [analista.capitalize() for row in df['#Processo']]
+    general_df = general_df.append(df)
+path = f'output/geral.xlsx'
+general_df.to_excel(path, index=False)
+preparar_excel(path)
 
 print('Planilhas Processadas')
