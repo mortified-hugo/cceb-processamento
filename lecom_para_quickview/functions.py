@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+from datetime import datetime as dt
 
 
 def drop(to_alter, args, column):
@@ -27,4 +28,11 @@ def adicionar_novas_portarias(list, dict):
                 dict[portaria] = f'{info[0]}/{info[1]}'
             else:
                 dict[portaria] = f'{info[0]}/?'
+
+
+
+
+
+
+
 

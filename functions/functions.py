@@ -27,9 +27,9 @@ def situacao_parser(input_df, situacao):
     response = []
     for protocolo in input_df['PROTOCOLO']:
         try:
-            status = situacao.loc[protocolo, 'SITUAÇÃO']
+            status = situacao.loc[protocolo, 'SITUAÇÃO:']
             if type(status) is pd.Series:
-                status = status[0]
+                status = "Dependente do Município: verificar consulta pública"
             if status in ['', np.nan, 0]:
                 status = "SEM ANÁLISE"
             response.append(status)

@@ -2,7 +2,6 @@ import pandas as pd
 import datetime as dt
 import json
 from lecom_para_quickview.functions import replace, replace_portaria, drop, adicionar_novas_portarias
-from functions.functions import cneas_parser
 
 today = format(dt.datetime.now(), '%d.%m.%Y')
 
