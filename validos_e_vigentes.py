@@ -9,13 +9,15 @@ def validade(df):
 
     list_of_etapas_access = ['ANÁLISE TÉCNICA',
                              'ANÁLISE TECNICA - CGCEB',
-                             'ANÁLISE TECNICA - CCEB'
+                             'ANÁLISE TECNICA - CCEB',
                              'EM DILIGÊNCIA',
                              'AGUARDANDO ANÁLISE',
                              'AGUARDANDO MANIFESTAÇÃO',
+                             'AGUARDANDO MANIFESTAÇÃO - MEC',
+                             'AGUARDANDO MANIFESTAÇÃO - MS'
                              'APRECIAÇÃO',
                              'APROVAÇÃO']
-    list_of_etapas_json = ["ANALISE_MACRO",
+    list_of_etapas_json = ['ANALISE_MACRO',
                            'VALIDACAO_DE_DOCUMENTOS',
                            'APROVACAO_CGCEB',
                            'RESPONDER_DILIGENCIA',
@@ -91,3 +93,4 @@ sorted_df = df.sort_values(by=['CNPJ', 'DT_FIM_CERTIFICACAO_ATUAL'])
 cnpj_df = listagem_de_entidades(sorted_df)
 cnpj_df['STATUS_CEBAS'] = validade(cnpj_df)
 cnpj_df.to_excel('output/status_cebas.xlsx', index=False)
+
