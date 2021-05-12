@@ -14,7 +14,7 @@ def validade(df):
                              'AGUARDANDO ANÁLISE',
                              'AGUARDANDO MANIFESTAÇÃO',
                              'AGUARDANDO MANIFESTAÇÃO - MEC',
-                             'AGUARDANDO MANIFESTAÇÃO - MS'
+                             'AGUARDANDO MANIFESTAÇÃO - MS',
                              'APRECIAÇÃO',
                              'APROVAÇÃO']
     list_of_etapas_json = ['ANALISE_MACRO',
