@@ -23,6 +23,45 @@ def cneas_parser(input_df, cneas, access=False):
     return response
 
 
+def cneas_parser_direct(input_df, cneas, access=False):
+    if access:
+        column = 'CNPJ'
+    else:
+        column = 'CNPJ:'
+    response = []
+    input_df_indexed = input_df.set_index(column)
+
+    for cnpj in input_df[column]:
+        try:
+            municipio = input_df_indexed.loc[cnpj, 'Município:']
+
+            result = cneas[(cneas['CNPJ'] == cnpj) & (cneas['Município'] == municipio)]
+
+            nulls = result['Data da Conclusão'].isnull().sum()
+            total = len(result['Data da Conclusão'])
+
+            if nulls != total:
+                result = result.sort_values(by='Data de Conclusão', ascending=False)
+                data = result['Data de Conclusão'][0]
+                status = f"Concluído em {data}"
+            else:
+                status = result['Situação CNEAS'][0]
+
+            print(result)
+            if type(status) is pd.Series:
+                status = status[0]
+            if status == 'Concluído ':
+                data = result.loc[municipio, 'Data de Conclusão']
+                if type(data) is pd.Series:
+                    data = data[0]
+                status = f"Concluído em {data}"
+            response.append(status)
+        except KeyError:
+            response.append('Não Cadastrado')
+
+    return response
+
+
 def situacao_parser(input_df, situacao):
     response = []
     for protocolo in input_df['PROTOCOLO']:
