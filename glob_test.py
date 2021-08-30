@@ -1,3 +1,3 @@
-from datetime import datetime
+import win32com
 
-print(datetime.now().hour)
+print(win32com.__gen_path__)

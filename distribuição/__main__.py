@@ -2,8 +2,8 @@ import pandas as pd
 from glob import glob
 from datetime import datetime
 
-from functions.functions import access_parser, situacao_parser, cneas_parser, preparar_excel
-from functions.load_functions import load_cneas, load_processos, load_main_sheet, load_old_sheet
+from functions.functions import access_parser, situacao_parser, cneas_parser, preparar_excel, cneas_parser_direct
+from functions.load_functions import load_cneas, load_processos, load_main_sheet, load_old_sheet, load_cneas_direct
 
 #Carregar planilhas de informação
 
@@ -19,9 +19,9 @@ for analista in analistas:
 
 # PLANILHA INICIAL
     main_file = f'input/new/{analista}.xlsx'
-    #old_file = f'input/old/{analista}.xlsx'
+    old_file = f'input/old/{analista}.xlsx'
     df = load_main_sheet(main_file)
-    #old_df = load_old_sheet(old_file)
+    old_df = load_old_sheet(old_file)
 
 # DADOS DO ACCESS
 
@@ -37,7 +37,7 @@ for analista in analistas:
 
 # CNEAS E SITUAÇÃO
     final_df['CNEAS:'] = cneas_parser(final_df, cneas_df)
-    #final_df['SITUAÇÃO:'] = situacao_parser(final_df, old_df)
+    final_df['SITUAÇÃO:'] = situacao_parser(final_df, old_df)
     sorted_df = final_df.sort_values(' Data da Requisição')
     sorted_df[' Data da Requisição'] = sorted_df[' Data da Requisição'].dt.strftime('%d/%m/%Y')
 

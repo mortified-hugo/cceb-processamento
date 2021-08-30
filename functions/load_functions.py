@@ -8,6 +8,7 @@ def load_main_sheet(file):
                                 'Análise Macro Analisada por:',
                                 'PROTOCOLO',
                                 'CNPJ:',
+                                #'Município:',
                                 'Nome da Organização: (como está no CNPJ)',
                                 'Tipo:',
                                 'Etapa atual'
@@ -21,6 +22,9 @@ def load_cneas(file):
     df = pd.read_excel(file, engine='xlrd', skiprows=range(0, 12),
                        usecols="B,J", index_col="CNPJ da\nEntidade")
     return df
+
+def load_cneas_direct(file):
+    df = pd. read_excel(file, engine='xlrd', index_col='CNPJ')
 
 
 def load_old_sheet(file):
@@ -36,6 +40,7 @@ def load_processos(file):
                                 'DT_PROTOCOLO',
                                 'TIPO_PROCESSO',
                                 'PROTOCOLO_SEI',
+                                #'MUNICIPIO',
                                 'FASE_PROCESSO']
                        )
     return df

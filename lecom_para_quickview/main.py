@@ -77,6 +77,7 @@ for processo_a_corrigir in [6005, 6787, 6969, 8107, 8241, 8327, 9062, 9645, 1007
                             15552, 20902, 20090]:
     try:
         df.loc[processo_a_corrigir, 'Portaria Assinada'] = '163/2020'
+        df.loc[processo_a_corrigir, 'Portaria Publicada'] = '163/2020'
     except IndexError:
         print(f'Processo número {processo_a_corrigir} não encontrado')
 print("PORTARIAS SUBSTITUÍDAS")

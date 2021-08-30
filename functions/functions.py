@@ -85,17 +85,20 @@ def access_parser(df, reference_df):
     nome = []
     tipo = []
     fase = []
+    municipio = []
     for protocolo in df['PROTOCOLO']:
         base.append(reference_df.loc[protocolo, 'BASE'])
         data.append(reference_df.loc[protocolo, "DT_PROTOCOLO"])
         cnpj.append(reference_df.loc[protocolo, "CNPJ"])
         nome.append(reference_df.loc[protocolo, "ENTIDADE"])
         tipo.append(reference_df.loc[protocolo, "TIPO_PROCESSO"])
+        #municipio.append(reference_df.loc[protocolo, "MUNICIPIO"])
         fase.append(reference_df.loc[protocolo, 'FASE_PROCESSO'])
     df['#Processo'] = base
     df[' Data da Requisição'] = data
     df['CNPJ:'] = cnpj
     df['Nome da Organização: (como está no CNPJ)'] = nome
+    #df['Município:'] = municipio
     df['Tipo:'] = tipo
     df['Etapa atual'] = fase
 
