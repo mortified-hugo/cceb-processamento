@@ -36,22 +36,22 @@ def cneas_parser_direct(input_df, cneas, access=False):
             municipio = input_df_indexed.loc[cnpj, 'Município:']
 
             result = cneas[(cneas['CNPJ'] == cnpj) & (cneas['Município'] == municipio)]
-
-            nulls = result['Data da Conclusão'].isnull().sum()
-            total = len(result['Data da Conclusão'])
+            print(f'{result["Situação CNEAS"]} em {result["Ano de Conclusão"]}')
+            nulls = result['Ano Conclusão'].isnull().sum()
+            total = len(result['Ano Conclusão'])
 
             if nulls != total:
-                result = result.sort_values(by='Data de Conclusão', ascending=False)
-                data = result['Data de Conclusão'][0]
+                result = result.sort_values(by='Ano Conclusão', ascending=False)
+                data = result['Ano Conclusão'][0]
                 status = f"Concluído em {data}"
+                print(status)
             else:
                 status = result['Situação CNEAS'][0]
 
-            print(result)
             if type(status) is pd.Series:
                 status = status[0]
             if status == 'Concluído ':
-                data = result.loc[municipio, 'Data de Conclusão']
+                data = result.loc[municipio, 'Ano Conclusão']
                 if type(data) is pd.Series:
                     data = data[0]
                 status = f"Concluído em {data}"

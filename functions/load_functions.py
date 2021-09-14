@@ -1,4 +1,5 @@
 import pandas as pd
+from functions.text_function import text_to_id
 
 
 def load_main_sheet(file):
@@ -8,13 +9,14 @@ def load_main_sheet(file):
                                 'Análise Macro Analisada por:',
                                 'PROTOCOLO',
                                 'CNPJ:',
-                                #'Município:',
+                                'Município:',
                                 'Nome da Organização: (como está no CNPJ)',
                                 'Tipo:',
                                 'Etapa atual'
                                 ],
                        )
     df[' Data da Requisição'] = pd.to_datetime(df[' Data da Requisição'], dayfirst=True)
+    df['Município:'] = df['Município:'].map(text_to_id)
     return df
 
 
@@ -23,8 +25,12 @@ def load_cneas(file):
                        usecols="B,J", index_col="CNPJ da\nEntidade")
     return df
 
+
 def load_cneas_direct(file):
-    df = pd. read_excel(file, engine='xlrd', index_col='CNPJ')
+    df = pd. read_excel(file, engine='xlrd')
+    df['Município'] = df['Município'].map(text_to_id)
+
+    return df
 
 
 def load_old_sheet(file):
@@ -40,8 +46,10 @@ def load_processos(file):
                                 'DT_PROTOCOLO',
                                 'TIPO_PROCESSO',
                                 'PROTOCOLO_SEI',
-                                #'MUNICIPIO',
+                                'MUNICIPIO',
                                 'FASE_PROCESSO']
                        )
+    df['MUNICIPIO'] = df['MUNICIPIO'].map(text_to_id)
+
     return df
 
