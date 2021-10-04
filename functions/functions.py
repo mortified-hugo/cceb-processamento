@@ -6,6 +6,17 @@ from datetime import datetime
 
 
 def cneas_parser(input_df, cneas, access=False):
+    """
+    Pareia os CNPJs das entidades com as informações do CNEAS obtidas na consulta pública.
+    Infelizmente, essa função não leva em conta diferentes cneas por municípios, então se usada, é aconceselhável que
+    os analistas confirmem a informação ou no próprio cneas ou no Painel CEBAS.
+    :param input_df: Planilha do analista (em DataFrame)
+    :param cneas: Planilha CNEAS Consulta Pública (em DataFrame)
+    :param access: Se verdadeiro, a função é capaz de extrair a informação de uma planilha com as colunas do ACCESS.
+    Default é Falso.
+
+    :return: Coluna "SITUAÇÃO CNEAS" adicionado ao DataFrame de input.
+    """
     if access:
         column = 'CNPJ'
     else:
@@ -63,6 +74,14 @@ def cneas_parser_direct(input_df, cneas, access=False):
 
 
 def situacao_parser(input_df, situacao):
+    """
+    Transporta a coluna de situação das planilhas antigas dos analistas para a nova planilha.
+
+    :param input_df: DataFrame da planilha do analista
+    :param situacao: DataFrame da planilha antiga do analista
+
+    :return: Coluna "Situação:" na planilha finalizada.
+    """
     response = []
     for protocolo in input_df['PROTOCOLO']:
         try:
@@ -79,6 +98,13 @@ def situacao_parser(input_df, situacao):
 
 
 def access_parser(df, reference_df):
+    """
+    Retira informações da planilha geral de processos de processos contidos em blocos do SEI.
+    :param df: Planilha do SEI, com a lista de protocolos na coluna B (Em DataFrame)
+    :param reference_df: Planilha de processos geral (Em Data Frame)
+
+    :return: Lista de processos com informações similares àquelas contidas na planilha em produção para serem somadas.
+    """
     base = []
     data = []
     cnpj = []
@@ -103,6 +129,10 @@ def access_parser(df, reference_df):
     df['Etapa atual'] = fase
 
 def preparar_excel(input):
+    """
+    Abre as colunas em uma planilha do Excel para facilicar a leitura.
+    :param input: string da localização do Excel no computador
+    """
     excel = win32.gencache.EnsureDispatch('Excel.Application')
     wb = excel.Workbooks.Open(str(pathlib.Path(input).resolve()))
     ws = wb.Worksheets("Sheet1")
@@ -111,6 +141,10 @@ def preparar_excel(input):
     excel.Application.Quit()
 
 def comprimento():
+    """
+    Define o comprimento do dia mais adequado (para uso em e-mails)
+    :return: Comprimento adequado para o horário do dia
+    """
     current_hour = datetime.now().hour
     if current_hour < 12:
         return 'Bom dia'

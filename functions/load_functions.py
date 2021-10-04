@@ -1,6 +1,7 @@
 import pandas as pd
 from functions.text_function import text_to_id
 
+#FUNÇÕES DE CARREGAMENTO DAS PLANILHAS TIPICAMENTE USADAS.
 
 def load_main_sheet(file):
     df = pd.read_excel(file, sheet_name=0, engine='xlrd', skiprows=[0, 1],
