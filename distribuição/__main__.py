@@ -5,10 +5,10 @@ from datetime import datetime
 from functions.functions import access_parser, situacao_parser, cneas_parser, preparar_excel, cneas_parser_direct
 from functions.load_functions import load_cneas, load_processos, load_main_sheet, load_old_sheet, load_cneas_direct
 
-#Carregar planilhas de informação
+# Carregar planilhas de informação
 
 hoje = format(datetime.now(), '%d.%m.%Y')
-cneas_df = load_cneas_direct('input/cneas.xlsx')
+cneas_df = load_cneas('input/cneas.xlsx')
 df_processos_geral = load_processos('input/processos.xlsx')
 
 filenames = glob('input/new/*.xlsx')
@@ -36,7 +36,7 @@ for analista in analistas:
     final_df = df.append(df_access)
 
 # CNEAS E SITUAÇÃO
-    final_df['CNEAS:'] = cneas_parser_direct(final_df, cneas_df)
+    final_df['CNEAS:'] = cneas_parser(final_df, cneas_df)
     final_df['SITUAÇÃO:'] = situacao_parser(final_df, old_df)
     sorted_df = final_df.sort_values(' Data da Requisição')
     sorted_df[' Data da Requisição'] = sorted_df[' Data da Requisição'].dt.strftime('%d/%m/%Y')
@@ -57,6 +57,5 @@ path = f'output/geral.xlsx'
 general_df.to_excel(path, index=False)
 preparar_excel(path)
 
-print(cneas_df.head())
 print('Planilhas Processadas')
 

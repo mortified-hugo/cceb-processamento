@@ -25,22 +25,19 @@ def ofertas_lecom(df):
     etapas = []
     ofertas = []
     n_de_ofertas = []
-    vagas = []
 
     for processo in set(df['#Processo']):
         processos.append(processo)
         etapas.append(single_result_parcer(df, processo, '#Processo', 'Etapa'))
         oferta = create_str_from_list(df, processo, '#Processo', 'Ofertas')
         ofertas.append(oferta)
-        n_de_ofertas.append(len(ofertas.split("; ")))
-        vagas.append(create_str_from_list(df, processo, '#Processo', 'Vagas'))
+        n_de_ofertas.append(len(oferta.split("; ")))
 
     new_df = pd.DataFrame({
         "#Processo": processos,
         "Etapa": etapas,
         "Ofertas": ofertas,
         "Número de Ofertas": n_de_ofertas,
-        "Vagas": vagas
     })
     return new_df
 
@@ -108,51 +105,3 @@ def ofertas_access(df):
     })
 
     return new_df
-
-
-try:
-    lecom_df = pd.read_excel("input/ofertas_lecom.xlsx")
-    new_lecom_df = ofertas_lecom(lecom_df)
-    new_lecom_df.to_excel('output/ofertas_lecom.xlsx', index=False)
-except FileNotFoundError:
-    print('LECOM não encontrada')
-
-try:
-    access_df = pd.read_excel("input/ofertas_access.xlsx")
-    new_access_df = ofertas_access(access_df)
-    new_access_df.to_excel('output/ofertas_access.xlsx', index=False)
-except FileNotFoundError:
-    print('ACCESS não encontrada')
-
-try:
-    access_columns_df = pd.read_excel("input/ofertas_access_por_colunas.xlsx", index_col='PROTOCOLO')
-    new_access_columns_df = ofertas_access_column(access_columns_df)
-    new_access_columns_df.to_excel('output/ofertas_access_columns.xlsx', index=False)
-except FileNotFoundError:
-    print('ACCESS de coluna não encontrada')
-
-
-def motivo_indeferimento(df):
-
-    motivos = []
-    processos = []
-    for processo in set(df['#Processo']):
-        processos.append(processo)
-        motivos.append(create_str_from_list(df, processo, "#Processo", 'Exposição dos Motivos'))
-
-    new_df = pd.DataFrame({
-        '#Processos': processos,
-        'Motivos Indeferimento': motivos
-    })
-
-    return new_df
-
-motivos_df = pd.read_excel("input/motivos.xlsx")
-new_motivos_df = motivo_indeferimento(motivos_df)
-new_motivos_df.to_excel('output/motivos.xlsx', index=False)
-
-
-
-
-
-
