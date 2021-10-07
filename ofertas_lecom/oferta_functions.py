@@ -19,25 +19,33 @@ def single_result_parcer(df, ftr, column_a, columb_b):
 
 
 #Lecom
-def ofertas_lecom(df):
+def ofertas_e_usuarios_lecom(df_ofertas, df_usuarios, lecom_df):
 
     processos = []
-    etapas = []
+    cnpj = []
     ofertas = []
     n_de_ofertas = []
+    usuarios = []
+    atividades = []
 
-    for processo in set(df['#Processo']):
+    for processo in set.union(set(df_ofertas['#Processo']), set(df_usuarios["#Processo"])):
         processos.append(processo)
-        etapas.append(single_result_parcer(df, processo, '#Processo', 'Etapa'))
-        oferta = create_str_from_list(df, processo, '#Processo', 'Ofertas')
-        ofertas.append(oferta)
-        n_de_ofertas.append(len(oferta.split("; ")))
+        cnpj.append(single_result_parcer(lecom_df, processo, "#Processo", "CNPJ:"))
+        ofertas.append(create_str_from_list(df_ofertas, processo, '#Processo', 'Ofertas'))
+
+        usuario = create_str_from_list(df_usuarios, processo, "#Processo", "Usuário(s)")
+        usuarios.append(usuario)
+        ofertas_cebas = create_str_from_list(df_usuarios, processo, '#Processo', "Atividade")
+        n_de_ofertas.append(len(ofertas_cebas.split("; ")))
+        atividades.append(ofertas_cebas)
 
     new_df = pd.DataFrame({
         "#Processo": processos,
-        "Etapa": etapas,
-        "Ofertas": ofertas,
-        "Número de Ofertas": n_de_ofertas,
+        "CNPJ": cnpj,
+        "Ofertas CNEAS": ofertas,
+        "Usuários": usuarios,
+        "Ofertas CEBAS": atividades,
+        "Número de Ofertas": n_de_ofertas
     })
     return new_df
 

@@ -1,6 +1,4 @@
 import re
-import pandas as pd
-from datetime import datetime as dt
 
 
 def drop(to_alter, args, column):
