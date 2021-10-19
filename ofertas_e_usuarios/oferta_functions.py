@@ -19,20 +19,21 @@ def single_result_parcer(df, ftr, column_a, columb_b):
 
 
 #Lecom
-def ofertas_e_usuarios_lecom(df_ofertas, df_usuarios, lecom_df):
+def ofertas_e_usuarios_lecom(df_usuarios, lecom_df):
 
     processos = []
+    protocolo = []
     cnpj = []
-    ofertas = []
+    #ofertas = []
     n_de_ofertas = []
     usuarios = []
     atividades = []
 
-    for processo in set.union(set(df_ofertas['#Processo']), set(df_usuarios["#Processo"])):
+    for processo in set.union(set(df_usuarios['#Processo']), set(df_usuarios["#Processo"])):
         processos.append(processo)
         cnpj.append(single_result_parcer(lecom_df, processo, "#Processo", "CNPJ:"))
-        ofertas.append(create_str_from_list(df_ofertas, processo, '#Processo', 'Ofertas'))
-
+        protocolo.append(single_result_parcer(lecom_df, processo, "#Processo", "PROTOCOLO"))
+        #ofertas.append(create_str_from_list(df_ofertas, processo, '#Processo', 'Ofertas'))
         usuario = create_str_from_list(df_usuarios, processo, "#Processo", "Usuário(s)")
         usuarios.append(usuario)
         ofertas_cebas = create_str_from_list(df_usuarios, processo, '#Processo', "Atividade")
@@ -41,23 +42,29 @@ def ofertas_e_usuarios_lecom(df_ofertas, df_usuarios, lecom_df):
 
     new_df = pd.DataFrame({
         "#Processo": processos,
+        "Protocolo": protocolo,
         "CNPJ": cnpj,
-        "Ofertas CNEAS": ofertas,
-        "Usuários": usuarios,
+        #"Ofertas CNEAS": ofertas,
+        "Número de Ofertas": n_de_ofertas,
         "Ofertas CEBAS": atividades,
-        "Número de Ofertas": n_de_ofertas
+        "Usuários": usuarios
     })
     return new_df
 
+
 def ofertas_access_column(df):
+    access = []
     protocolos = []
-    entidades = []
+    cnpj = []
     ofertas = []
+    usuarios = []
     n_de_ofertas = []
-    print(df.head())
 
     for protocolo, row in df.iterrows():
+        access.append("Access")
         protocolos.append(protocolo)
+
+        # OFERTAS
         lista_de_ofertas = []
         for column in ["OFERTA_I", "OFERTA_II", "OFERTA_III",
                        "OFERTA_IV", "OFERTA_V", "OFERTA_VI",
@@ -65,15 +72,28 @@ def ofertas_access_column(df):
             oferta = df.loc[protocolo, column]
             if oferta is not np.NaN:
                 lista_de_ofertas.append(oferta)
-        entidades.append(df.loc[protocolo, 'ENTIDADE'])
         ofertas.append("; ".join(lista_de_ofertas))
         n_de_ofertas.append(len(lista_de_ofertas))
 
+        #USUARIOS
+        lista_de_usuarios = []
+        for column in ["USUARIO_I", "USUARIO_II", "USUARIO_III",
+                       "USUARIO_IV", "USUARIO_V", "USUARIO_VI",
+                       "USUARIO_VII"]:
+            usuario = df.loc[protocolo, column]
+            if usuario is not np.NaN:
+                lista_de_usuarios.append(usuario)
+        usuarios.append("; ".join(lista_de_usuarios))
+
+        cnpj.append(df.loc[protocolo, 'CNPJ'])
+
     new_df = pd.DataFrame({
-        "PROTOCOLO": protocolos,
-        "ENTIDADE": entidades,
-        "OFERTAS": ofertas,
-        "NÚMERO DE OFERTAS": n_de_ofertas
+        "#Processo": access,
+        "Protocolo": protocolos,
+        "CNPJ": cnpj,
+        "Número de Ofertas": n_de_ofertas,
+        "Ofertas CEBAS": ofertas,
+        "Usuários": usuarios
     })
 
     return new_df

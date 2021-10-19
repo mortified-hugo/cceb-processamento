@@ -111,9 +111,9 @@ def ofertas_access(df):
 
 
 try:
-    lecom_df = pd.read_excel("input/ofertas_lecom.xlsx")
+    lecom_df = pd.read_excel("input/ofertas_e_usuarios.xlsx")
     new_lecom_df = ofertas_lecom(lecom_df)
-    new_lecom_df.to_excel('output/ofertas_lecom.xlsx', index=False)
+    new_lecom_df.to_excel('output/ofertas_e_usuarios.xlsx', index=False)
 except FileNotFoundError:
     print('LECOM não encontrada')
 

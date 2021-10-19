@@ -3,7 +3,7 @@ import datetime as dt
 import json
 from lecom_para_quickview.lecom_functions import replace, replace_portaria, drop, adicionar_novas_portarias
 from functions.functions import preparar_excel
-from ofertas_lecom.oferta_functions import ofertas_e_usuarios_lecom
+from ofertas_e_usuarios.oferta_functions import ofertas_e_usuarios_lecom
 
 today = format(dt.datetime.now(), '%d.%m.%Y')
 
@@ -11,7 +11,6 @@ today = format(dt.datetime.now(), '%d.%m.%Y')
 
 lecom_df = pd.read_excel('input/entrada.xlsx', skiprows=[0, 1])
 df = lecom_df.set_index("#Processo")
-ofertas_df = pd.read_excel("input/entrada.xlsx", sheet_name='GRID_OFERTAS')
 usuarios_df = pd.read_excel("input/entrada.xlsx", sheet_name='GRID_CONCLU_USU')
 print("INPUT CARREGADO")
 
@@ -115,7 +114,7 @@ print("TABELA SALVA")
 
 #OFERTAS E USUÁRIOS
 
-new_lecom_df = ofertas_e_usuarios_lecom(ofertas_df, usuarios_df, lecom_df)
+new_lecom_df = ofertas_e_usuarios_lecom(usuarios_df, lecom_df)
 new_lecom_df.to_excel('output/ofertas_e_usuarios_lecom.xlsx', index=False)
 preparar_excel('output/ofertas_e_usuarios_lecom.xlsx')
 print("TABELA DE OFERTAS E USUÁRIOS SALVA")
